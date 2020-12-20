@@ -29,7 +29,7 @@ class RenderWindow:
         pygame.draw.rect(self.__screen, (255, 255, 255), self.__r)
 
     def __loop(self) -> None:
-        dt = self.__clock.tick(60)
+        # dt = self.__clock.tick(60)
         self.__screen.fill((34, 34, 35))
         self.handle_events()
         self.draw()

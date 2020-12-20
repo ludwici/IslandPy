@@ -1,0 +1,5 @@
+[flake8]
+exclude = .git, __pycache__, build, dist, venv
+ignore =
+    E501, # line too long (greater than 79)
+max-complexity = 10
