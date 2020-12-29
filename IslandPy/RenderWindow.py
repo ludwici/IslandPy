@@ -3,12 +3,11 @@ import os
 import pygame
 from pygame.time import Clock
 
-# TODO: make scenes not depend by IslandPy
 from IslandPy.Scenes.TestScene import TestScene
 
 
 class RenderWindow:
-    def __init__(self) -> None:
+    def __init__(self, scene_list: list) -> None:
         pygame.init()
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.display.set_caption("Render Window")
@@ -18,8 +17,17 @@ class RenderWindow:
         self.__pause = False
         self.__fps = 60
         self.__test_scene = TestScene(name="test")
+        self.__scenes = scene_list
+        if len(self.__scenes) < 1:
+            self.__done = True
+            raise Exception("Please, enter 1 or more scenes")
 
-    def start(self) -> None:
+    def start(self, scene_name: str) -> None:
+        scene = [s if s.name == scene_name else None for s in self.__scenes][0]
+        if not scene:
+            self.__done = True
+            raise Exception("Scene not found")
+        self.__test_scene = scene
         while not self.__done:
             self.__loop()
         pygame.quit()
@@ -48,7 +56,7 @@ class RenderWindow:
 
     def __loop(self) -> None:
         dt = self.__clock.tick(self.__fps)
-        self.__screen.fill((34, 34, 35))
+        self.__screen.fill((34, 34, 34))
         self.handle_events()
         self.update(dt)
         self.draw()
