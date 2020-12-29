@@ -1,14 +1,14 @@
 import pygame
 
-from IslandPy.RenderObject import RenderObject
-from IslandPy.Scene import Scene
+from IslandPy.Render.TestRender import TestRender
+from IslandPy.Scenes.AScene import AScene
 
 
 class TestScene(Scene):
     def __init__(self, name: str) -> None:
         super().__init__(name)
-        self.r1 = RenderObject(scene=self, size=(100, 100), position=(0, 0))
-        self.r2 = RenderObject(scene=self, size=(100, 100), position=(300, 120))
+        self.r1 = TestRender(scene=self, size=(100, 100), position=(0, 0))
+        self.r2 = TestRender(scene=self, size=(100, 100), position=(300, 120))
 
     def handle_events(self, event: pygame.event.Event) -> None:
         super().handle_events(event)
