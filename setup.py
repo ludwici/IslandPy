@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name="IslandPy",
-    version="0.0.0.dev2",
+    version="0.0.0.dev5",
     author="ludwici",
     author_email="andrew.volski@gmail.com",
-    packages=find_packages(exclude=["Scenes"]),
+    packages=find_packages(),
     install_requires=[
         "pygame"
     ],
