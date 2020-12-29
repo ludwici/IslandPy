@@ -7,7 +7,7 @@
 [![Pypi](https://img.shields.io/pypi/l/IslandPy)](https://pypi.org/project/IslandPy/)
 ![](https://img.shields.io/tokei/lines/github/ludwici/IslandPy)
 
-## How to add scenes to game:
+## How to add scenes to game
 1. Define you scene:
 ```python
 import pygame
