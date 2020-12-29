@@ -25,6 +25,7 @@ class CustomScene(AScene):
         pygame.draw.rect(surface, (255, 255, 255), self.r1.rect)
 ```
 Scene must be inherited from `AScene` - a base class of all scenes.
+
 2. Create a list of scenes
 ```python
 s1 = CustomScene("cs1")
@@ -56,6 +57,7 @@ def draw(self, surface: pygame.Surface) -> None:
         pygame.draw.rect(surface, (255, 255, 255), self.rect)
 ```
 This method will be called automatically.
+
 2. Overload draw-method in `CustomScene`:
 ```python
 def draw(self, surface: pygame.Surface) -> None:
