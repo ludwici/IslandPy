@@ -4,7 +4,7 @@ from IslandPy.Render.TestRender import TestRender
 from IslandPy.Scenes.AScene import AScene
 
 
-class TestScene(Scene):
+class TestScene(AScene):
     def __init__(self, name: str) -> None:
         super().__init__(name)
         self.r1 = TestRender(scene=self, size=(100, 100), position=(0, 0))

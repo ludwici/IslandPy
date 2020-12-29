@@ -3,7 +3,9 @@ from abc import ABC
 import pygame
 
 
-class Scene(ABC):
+class AScene(ABC):
+    __slots__ = ("name", "objects")
+
     def __init__(self, name: str) -> None:
         self.name = name
         self.objects = []
