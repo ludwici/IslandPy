@@ -94,6 +94,6 @@ def handle_events(self, event: pygame.event.Event) -> None:
             self.count += 1
 ```
 
-[1]: https://github.com/ludwici/IslandPy/blob/dev/README.md#add-scenes-to-game
-[2]: https://github.com/ludwici/IslandPy#how-to-draw-you-custom-object
-[3]: https://github.com/ludwici/IslandPy#simple-textlabel-example
+[1]: https://github.com/ludwici/IslandPy/tree/dev#add-scenes-to-game
+[2]: https://github.com/ludwici/IslandPy/tree/dev#draw-you-custom-object
+[3]: https://github.com/ludwici/IslandPy/tree/dev#simple-textlabel-example
