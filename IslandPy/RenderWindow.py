@@ -16,21 +16,28 @@ class RenderWindow:
         self.__done = False
         self.__pause = False
         self.__fps = 60
-        self.__test_scene = TestScene(name="test")
+        self.__current_scene = TestScene(name="test")
         self.__scenes = scene_list
         if len(self.__scenes) < 1:
             self.__done = True
             raise Exception("Please, enter 1 or more scenes")
 
     def start(self, scene_name: str) -> None:
+        self.change_scene(scene_name)
+        while not self.__done:
+            self.__loop()
+        self.__current_scene.on_scene_change()
+        pygame.quit()
+
+    def change_scene(self, scene_name: str) -> None:
         scene = [s if s.name == scene_name else None for s in self.__scenes][0]
         if not scene:
             self.__done = True
             raise Exception("Scene not found")
-        self.__test_scene = scene
-        while not self.__done:
-            self.__loop()
-        pygame.quit()
+        scene.prev_scene = self.__current_scene
+        self.__current_scene.on_scene_change()
+        self.__current_scene = scene
+        self.__current_scene.on_scene_started()
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
@@ -43,16 +50,16 @@ class RenderWindow:
             if self.__pause:
                 continue
 
-            self.__test_scene.handle_events(event)
+            self.__current_scene.handle_events(event)
 
     def draw(self) -> None:
-        self.__test_scene.draw(self.__screen)
+        self.__current_scene.draw(self.__screen)
 
     def update(self, dt) -> None:
         if self.__pause:
             return
 
-        self.__test_scene.update(dt)
+        self.__current_scene.update(dt)
 
     def __loop(self) -> None:
         dt = self.__clock.tick(self.__fps)
