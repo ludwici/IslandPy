@@ -7,7 +7,10 @@
 [![Pypi](https://img.shields.io/pypi/l/IslandPy)](https://pypi.org/project/IslandPy/)
 ![](https://img.shields.io/tokei/lines/github/ludwici/IslandPy)
 
-## How to add scenes to game
+## How to:
+- Add scenes to game
+- Draw you custom object
+### Add scenes to game
 1. Define you scene:
 ```python
 import pygame
@@ -37,8 +40,8 @@ r = RenderWindow(scenes)
 r.start("cs1")
 ```
 
-## How to draw you custom object
-Create a child of ARenderObject
+### Draw you custom object
+Create a child of `ARenderObject`
 ```python
 from IslandPy.Render.ARenderObject import ARenderObject
 from IslandPy.Scenes.AScene import AScene
