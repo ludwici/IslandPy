@@ -10,7 +10,7 @@
 ### How to:
 - [Add scenes to game][1]
 - [Draw you custom object][2]
----
+
 ## Add scenes to game
 1. Define you scene:
 ```python
