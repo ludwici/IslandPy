@@ -10,7 +10,7 @@
 ### How to:
 - [Add scenes to game][1]
 - [Draw you custom object][2]
-
+- [Simple TextLabel example][3]
 ## Add scenes to game
 1. Define you scene:
 ```python
@@ -68,5 +68,32 @@ def draw(self, surface: pygame.Surface) -> None:
     super(CustomScene, self).draw(surface)
     pygame.draw.rect(surface, (255, 255, 255), self.r1.rect)
 ```
+
+## Simple TextLabel example
+Example of simple TextLabel, which increase count value by Space pressed. Create you `CustomScene` from [this][1] and modify:
+```python
+def __init__(self, name: str) -> None:
+    super().__init__(name)
+    self.count = 0
+    self.label = TextLabel(scene=self, font_size=14, text="Count: 0")
+```
+
+Change text-value on update-method:
+```python
+def update(self, dt) -> None:
+    super(CustomScene, self).update(dt)
+    self.label.text = f"Count: {self.count}"
+```
+
+And add event handler:
+```python
+def handle_events(self, event: pygame.event.Event) -> None:
+    super(CustomScene, self).handle_events(event)
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_SPACE:
+            self.count += 1
+```
+
 [1]: https://github.com/ludwici/IslandPy/blob/dev/README.md#add-scenes-to-game
 [2]: https://github.com/ludwici/IslandPy#how-to-draw-you-custom-object
+[3]: https://github.com/ludwici/IslandPy#simple-textlabel-example
