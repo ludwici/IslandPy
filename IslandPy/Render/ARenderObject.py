@@ -11,6 +11,7 @@ class ARenderObject(ABC):
     __slots__ = ("__is_draw", "scene", "rect", "_parent")
 
     def __init__(self, scene: AScene, size: (int, int), position: (int, int) = (0, 0)) -> None:
+        pygame.init()
         self.__is_draw = True
         self.scene = scene
         self.scene.objects.append(self)
