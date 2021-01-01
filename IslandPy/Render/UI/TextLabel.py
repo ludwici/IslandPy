@@ -9,14 +9,17 @@ from IslandPy.Scenes.AScene import AScene
 
 
 class TextLabel(ARenderObject):
+    __slots__ = ("_font_size", "_text", "_font_name", "padding", "_bold", "_italic", "_alpha", "color",
+                 "bg_color", "can_show_bg", "_font", "_image", "__surface")
+
     def __init__(self, scene: AScene, font_size: int, text: str = "", font_name: str = "", padding: Indents = Indents(),
                  position: Tuple[int, int] = (0, 0), bold: bool = False, italic: bool = False, alpha: int = 255,
-                 color: Color = Color(255, 255, 255), bg_color: Color = Color(255, 0, 0),
+                 color: Color = Color(255, 255, 255), bg_color: Color = Color(0, 0, 0),
                  can_show_bg: bool = False) -> None:
 
         super().__init__(scene=scene, size=(0, 0), position=position)
         self._alpha = alpha
-        self._can_show_bg = can_show_bg
+        self.can_show_bg = can_show_bg
         self._font_name = font_name
         self._font_size = font_size
         self._bold = bold
@@ -27,16 +30,8 @@ class TextLabel(ARenderObject):
         self.bg_color = bg_color
         self._image = None
         self.__surface = None
-        self._padding = padding
+        self.padding = padding
         self.text = text
-
-    @property
-    def can_show_bg(self) -> bool:
-        return self._can_show_bg
-
-    @can_show_bg.setter
-    def can_show_bg(self, value: bool) -> None:
-        self._can_show_bg = value
 
     @property
     def alpha(self) -> int:
@@ -94,12 +89,12 @@ class TextLabel(ARenderObject):
         self._text = value
         self._image = self._font.render(self._text, True, self.color)
         if self.can_show_bg:
-            self.rect.w = self._image.get_rect().w + self._padding.right + self._padding.left
-            self.rect.h = self._image.get_rect().h + self._padding.bottom + self._padding.top
+            self.rect.w = self._image.get_rect().w + self.padding.right + self.padding.left
+            self.rect.h = self._image.get_rect().h + self.padding.bottom + self.padding.top
 
             self.__surface = pygame.Surface((self.rect.w, self.rect.h))
             self.__surface.fill(color=self.bg_color)
-            self.__surface.blit(self._image, (self._padding.left, self._padding.top))
+            self.__surface.blit(self._image, (self.padding.left, self.padding.top))
             self.__surface.set_alpha(self.alpha)
         else:
             self.rect.w, self.rect.h = self._image.get_rect().w, self._image.get_rect().h
