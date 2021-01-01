@@ -3,41 +3,36 @@ import os
 import pygame
 from pygame.time import Clock
 
-from IslandPy.Scenes.TestScene import TestScene
+from IslandPy.Scenes.AScene import AScene
 
 
 class RenderWindow:
-    def __init__(self, scene_list: list) -> None:
+    def __init__(self, start_scene: AScene, title: str = "") -> None:
         pygame.init()
         os.environ['SDL_VIDEO_CENTERED'] = '1'
-        pygame.display.set_caption("Render Window")
-        self.__screen = pygame.display.set_mode((800, 600))
+        pygame.display.set_caption(title)
+        self.__screen = pygame.display.set_mode((1280, 720))
         self.__clock = Clock()
         self.__done = False
         self.__pause = False
         self.__fps = 60
-        self.__current_scene = TestScene(name="test")
-        self.__scenes = scene_list
-        if len(self.__scenes) < 1:
-            self.__done = True
-            raise Exception("Please, enter 1 or more scenes")
+        self.__current_scene = start_scene
+        self.__current_scene.window = self
+        self.can_set_title_by_scene = True
 
-    def start(self, scene_name: str) -> None:
-        self.change_scene(scene_name)
+    def start(self) -> None:
         while not self.__done:
             self.__loop()
         self.__current_scene.on_scene_change()
         pygame.quit()
 
-    def change_scene(self, scene_name: str) -> None:
-        scene = [s if s.name == scene_name else None for s in self.__scenes][0]
-        if not scene:
-            self.__done = True
-            raise Exception("Scene not found")
-        scene.prev_scene = self.__current_scene
-        self.__current_scene.on_scene_change()
+    def stop(self) -> None:
+        self.__done = True
+
+    def change_scene(self, scene) -> None:
+        if self.can_set_title_by_scene:
+            pygame.display.set_caption(scene.name)
         self.__current_scene = scene
-        self.__current_scene.on_scene_started()
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
