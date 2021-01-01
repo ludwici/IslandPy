@@ -1,33 +1,67 @@
+from typing import Tuple
+
 import pygame
+from pygame.color import Color
 
 from IslandPy.Render.ARenderObject import ARenderObject
+from IslandPy.Render.UI.Indents import Indents
 from IslandPy.Scenes.AScene import AScene
 
 
 class TextLabel(ARenderObject):
-    def __init__(self, scene: AScene, font_size: int, text: str = "", font_name: str = "",
-                 position: (int, int) = (0, 0), bold: bool = False, italic: bool = False,
-                 color: tuple = (255, 255, 255)) -> None:
+    def __init__(self, scene: AScene, font_size: int, text: str = "", font_name: str = "", padding: Indents = Indents(),
+                 position: Tuple[int, int] = (0, 0), bold: bool = False, italic: bool = False, alpha: int = 255,
+                 color: Color = Color(255, 255, 255), bg_color: Color = Color(255, 0, 0),
+                 can_show_bg: bool = False) -> None:
+
         super().__init__(scene=scene, size=(0, 0), position=position)
+        self._alpha = alpha
+        self._can_show_bg = can_show_bg
         self._font_name = font_name
         self._font_size = font_size
-        self.bold = bold
-        self.italic = italic
+        self._bold = bold
+        self._italic = italic
         self.font_name = font_name
-        self._font.set_bold(self.bold)
-        self._font.set_italic(self.italic)
         self._text = text
-        self._color = color
+        self.color = color
+        self.bg_color = bg_color
         self._image = None
+        self.__surface = None
+        self._padding = padding
         self.text = text
 
     @property
-    def color(self) -> tuple:
-        return self._color
+    def can_show_bg(self) -> bool:
+        return self._can_show_bg
 
-    @color.setter
-    def color(self, value: tuple) -> None:
-        self._color = value
+    @can_show_bg.setter
+    def can_show_bg(self, value: bool) -> None:
+        self._can_show_bg = value
+
+    @property
+    def alpha(self) -> int:
+        return self._alpha
+
+    @alpha.setter
+    def alpha(self, value: int) -> None:
+        self._alpha = value
+
+    @property
+    def bold(self) -> bool:
+        return self._bold
+
+    @bold.setter
+    def bold(self, value: bool) -> None:
+        self._bold = value
+        self._update_font()
+
+    @property
+    def italic(self) -> bool:
+        return self._italic
+
+    @italic.setter
+    def italic(self, value: bool) -> None:
+        self._italic = value
         self._update_font()
 
     @property
@@ -58,8 +92,17 @@ class TextLabel(ARenderObject):
     @text.setter
     def text(self, value: str) -> None:
         self._text = value
-        self._image = self._font.render(self._text, True, self._color)
-        self.rect.w, self.rect.h = self._image.get_rect().w, self._image.get_rect().h
+        self._image = self._font.render(self._text, True, self.color)
+        if self.can_show_bg:
+            self.rect.w = self._image.get_rect().w + self._padding.right + self._padding.left
+            self.rect.h = self._image.get_rect().h + self._padding.bottom + self._padding.top
+
+            self.__surface = pygame.Surface((self.rect.w, self.rect.h))
+            self.__surface.fill(color=self.bg_color)
+            self.__surface.blit(self._image, (self._padding.left, self._padding.top))
+            self.__surface.set_alpha(self.alpha)
+        else:
+            self.rect.w, self.rect.h = self._image.get_rect().w, self._image.get_rect().h
 
     def _update_font(self):
         if self._font_name in pygame.font.get_fonts():
@@ -67,7 +110,14 @@ class TextLabel(ARenderObject):
         else:
             self._font = pygame.font.Font(f"{self._font_name}.ttf", self._font_size)
 
+        self._font.set_bold(self._bold)
+        self._font.set_italic(self._italic)
+
     def draw(self, surface: pygame.Surface) -> None:
         if not self._text or not self.is_draw:
             return
-        surface.blit(self._image, self.rect)
+
+        if self.can_show_bg:
+            surface.blit(self.__surface, self.rect)
+        else:
+            surface.blit(self._image, self.rect)
