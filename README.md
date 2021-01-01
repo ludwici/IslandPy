@@ -30,15 +30,11 @@ class CustomScene(AScene):
 ```
 Scene must be inherited from `AScene` - a base class of all scenes.
 
-2. Create a list of scenes
+2. Create object and pass them to window
 ```python
 s1 = CustomScene("cs1")
-scenes = [s1]
-```
-and pass them to window
-```python
-r = RenderWindow(scenes)
-r.start("cs1")
+r = RenderWindow(s1)
+r.start()
 ```
 
 ## Draw you custom object
