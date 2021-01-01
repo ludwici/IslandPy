@@ -54,6 +54,9 @@ class ARenderObject(ABC):
         self.rect.x = pos[0]
         self.rect.y = pos[1]
 
+    def move(self, velocity: Tuple[int, int]) -> None:
+        self.rect.move_ip(velocity[0], velocity[1])
+
     def show(self) -> None:
         self.__is_draw = True
 
