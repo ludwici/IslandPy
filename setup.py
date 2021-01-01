@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="IslandPy",
-    version="0.0.0.dev5",
+    version="0.0.0.dev7",
     author="ludwici",
     author_email="andrew.volski@gmail.com",
     packages=find_packages(),
