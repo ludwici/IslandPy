@@ -20,7 +20,7 @@ class RenderWindow:
         self.can_set_title_by_scene = True
 
     def start(self, start_scene: AScene) -> None:
-        self.__current_scene = start_scene
+        self.change_scene(start_scene)
         self.__current_scene.window = self
         while not self.__done:
             self.__loop()
