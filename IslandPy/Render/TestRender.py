@@ -14,8 +14,7 @@ class TestRender(ARenderObject):
     def update(self, dt) -> None:
         if self.rect.x > 300 or self.rect.x < 0:
             self._speed = -self._speed
-        move = self._speed
-        self.rect.x += move
+        self.rect.x += self._speed
 
     def handle_events(self, event: pygame.event.Event):
         if event.type == pygame.KEYDOWN:
