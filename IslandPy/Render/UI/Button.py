@@ -76,7 +76,7 @@ class Button(ARenderObject):
         return self._state
 
     @state.setter
-    def state(self, value: ButtonState):
+    def state(self, value: ButtonState) -> None:
         self._state = value
         try:
             if self.state & ButtonState.HOVERED or self.state & ButtonState.SELECTED:
