@@ -32,10 +32,11 @@ Scene must be inherited from `AScene` - a base class of all scenes.
 
 2. Create object and pass them to window
 ```python
-s1 = CustomScene("cs1")
-r = RenderWindow(s1)
-r.start()
+r = RenderWindow()
+s1 = CustomScene("Custom Scene")
+r.start(s1)
 ```
+You should create a scene between init `r` and `r.start`
 
 ## Draw you custom object
 Create a child of `ARenderObject`
