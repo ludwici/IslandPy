@@ -7,7 +7,7 @@ from IslandPy.Scenes.AScene import AScene
 
 
 class RenderWindow:
-    def __init__(self, start_scene: AScene, title: str = "") -> None:
+    def __init__(self, title: str = "") -> None:
         pygame.init()
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.display.set_caption(title)
@@ -16,11 +16,12 @@ class RenderWindow:
         self.__done = False
         self.__pause = False
         self.__fps = 60
-        self.__current_scene = start_scene
-        self.__current_scene.window = self
+        self.__current_scene = None
         self.can_set_title_by_scene = True
 
-    def start(self) -> None:
+    def start(self, start_scene: AScene) -> None:
+        self.__current_scene = start_scene
+        self.__current_scene.window = self
         while not self.__done:
             self.__loop()
         self.__current_scene.on_scene_change()
