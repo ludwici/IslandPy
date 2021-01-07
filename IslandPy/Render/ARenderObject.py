@@ -10,7 +10,7 @@ from IslandPy.Scenes.AScene import AScene
 class ARenderObject(ABC):
     __slots__ = ("__is_draw", "scene", "rect", "_parent")
 
-    def __init__(self, scene: AScene, size: (int, int), position: (int, int) = (0, 0)) -> None:
+    def __init__(self, scene: AScene, size: Tuple[int, int], position: Tuple[int, int] = (0, 0)) -> None:
         pygame.init()
         self.__is_draw = True
         self.scene = scene
@@ -66,7 +66,7 @@ class ARenderObject(ABC):
     def update(self, dt) -> None:
         pass
 
-    def handle_events(self, event: pygame.event.Event):
+    def handle_events(self, event: pygame.event.Event) -> None:
         pass
 
     def draw(self, surface: pygame.Surface) -> None:
