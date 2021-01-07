@@ -92,7 +92,7 @@ class TextLabel(ARenderObject):
             self.rect.w = self._image.get_rect().w + self.padding.right + self.padding.left
             self.rect.h = self._image.get_rect().h + self.padding.bottom + self.padding.top
 
-            self.__surface = pygame.Surface((self.rect.w, self.rect.h))
+            self.__surface = pygame.Surface((self.rect.w, self.rect.h))  # lgtm [py/call/wrong-arguments]
             self.__surface.fill(color=self.bg_color)
             self.__surface.blit(self._image, (self.padding.left, self.padding.top))
             self.__surface.set_alpha(self.alpha)
