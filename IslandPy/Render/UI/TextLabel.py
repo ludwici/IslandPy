@@ -33,6 +33,19 @@ class TextLabel(ARenderObject):
         self.padding = padding
         self.text = text
 
+    def copy_style_from(self, other: "TextLabel") -> None:
+        self.bold = other.bold
+        self.italic = other.italic
+        self.color = other.color
+        self.bg_color = other.bg_color
+        self.font_size = other.font_size
+        self.font_name = other.font_name
+        self.can_show_bg = other.can_show_bg
+        self.padding = other.padding
+        self.alpha = other.alpha
+
+        self.text = self.text
+
     @property
     def alpha(self) -> int:
         return self._alpha
