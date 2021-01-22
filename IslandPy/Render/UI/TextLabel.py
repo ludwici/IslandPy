@@ -9,13 +9,13 @@ from IslandPy.Scenes.AScene import AScene
 
 
 class TextLabel(ARenderObject):
-    __slots__ = ("_font_size", "_text", "_font_name", "padding", "_bold", "_italic", "_alpha", "color",
+    __slots__ = ("_font_size", "_text", "_font_name", "__padding", "_bold", "_italic", "_alpha", "color",
                  "bg_color", "can_show_bg", "_font", "_image", "__surface")
 
-    def __init__(self, scene: AScene, font_size: int, text: str = "", font_name: str = "", padding: Indents = Indents(),
-                 position: Tuple[int, int] = (0, 0), bold: bool = False, italic: bool = False, alpha: int = 255,
-                 color: Color = Color(255, 255, 255), bg_color: Color = Color(0, 0, 0),
-                 can_show_bg: bool = False) -> None:
+    def __init__(self, scene: AScene, font_size: int = 1, text: str = "", font_name: str = "",
+                 padding: Indents = Indents(), position: Tuple[int, int] = (0, 0), bold: bool = False,
+                 italic: bool = False, alpha: int = 255, color: Color = Color(255, 255, 255),
+                 bg_color: Color = Color(0, 0, 0), can_show_bg: bool = False) -> None:
 
         super().__init__(scene=scene, size=(0, 0), position=position)
         self._alpha = alpha
@@ -30,6 +30,7 @@ class TextLabel(ARenderObject):
         self.bg_color = bg_color
         self._image = None
         self.__surface = None
+        self.__padding = padding
         self.padding = padding
         self.text = text
 
@@ -44,6 +45,15 @@ class TextLabel(ARenderObject):
         self.padding = other.padding
         self.alpha = other.alpha
 
+        self.text = self.text
+
+    @property
+    def padding(self) -> Indents:
+        return self.__padding
+
+    @padding.setter
+    def padding(self, value: Indents) -> None:
+        self.__padding = value
         self.text = self.text
 
     @property
