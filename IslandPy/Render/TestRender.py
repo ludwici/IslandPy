@@ -26,3 +26,4 @@ class TestRender(ARenderObject):
     def draw(self, surface: pygame.Surface) -> None:
         if self.is_draw:
             pygame.draw.rect(surface, (255, 255, 255), self.rect)
+        super(TestRender, self).draw(surface)

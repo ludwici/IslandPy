@@ -16,13 +16,15 @@ class TestScene(AScene):
         self.b.set_image_by_state(ButtonState.HOVERED, path="res/btn_hover.png")
         self.b.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show()})
 
-    def show(self):
+    def show(self) -> None:
         self.b.lock()
 
     def handle_events(self, event: pygame.event.Event) -> None:
         super().handle_events(event)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
+                for o in self.objects:
+                    o.show_bounds = True
                 if self.r1.is_draw:
                     self.r1.hide()
                 else:
