@@ -129,3 +129,4 @@ class TextLabel(ARenderObject):
             surface.blit(self.__surface, self.rect)
         else:
             surface.blit(self._image, self.rect)
+        super(TextLabel, self).draw(surface)

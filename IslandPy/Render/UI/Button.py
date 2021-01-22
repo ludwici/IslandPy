@@ -152,3 +152,4 @@ class Button(ARenderObject):
     def draw(self, surface: pygame.Surface) -> None:
         if self.is_draw:
             surface.blit(self._current_image, self.rect)
+        super(Button, self).draw(surface)
