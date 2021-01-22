@@ -1,4 +1,5 @@
 import os
+from typing import Tuple
 
 import pygame
 from pygame.time import Clock
@@ -7,15 +8,16 @@ from IslandPy.Scenes.AScene import AScene
 
 
 class RenderWindow:
-    def __init__(self, title: str = "") -> None:
+    def __init__(self, title: str = "", bg_color: Tuple[int, int, int] = (34, 34, 34)) -> None:
         pygame.init()
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.display.set_caption(title)
         self.__screen = pygame.display.set_mode((1280, 720))
         self.__clock = Clock()
+        self.__bg_color = bg_color
         self.__done = False
         self.__pause = False
-        self.__fps = 60
+        self.fps = 60
         self.__current_scene = None
         self.can_set_title_by_scene = True
 
@@ -58,8 +60,8 @@ class RenderWindow:
         self.__current_scene.update(dt)
 
     def __loop(self) -> None:
-        dt = self.__clock.tick(self.__fps)
-        self.__screen.fill((34, 34, 34))
+        dt = self.__clock.tick(self.fps)
+        self.__screen.fill(self.__bg_color)
         self.handle_events()
         self.update(dt)
         self.draw()
