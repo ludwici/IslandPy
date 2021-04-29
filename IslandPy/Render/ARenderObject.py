@@ -8,7 +8,7 @@ from IslandPy.Scenes.AScene import AScene
 
 
 class ARenderObject(ABC):
-    __slots__ = ("__is_draw", "scene", "rect", "_parent", "show_bounds")
+    __slots__ = ("__is_draw", "scene", "rect", "_parent", "show_bounds", "_bounds_rect", "_bounds_color")
 
     def __init__(self, scene: AScene, size: Tuple[int, int], position: Tuple[int, int] = (0, 0)) -> None:
         pygame.init()
@@ -17,7 +17,13 @@ class ARenderObject(ABC):
         self.scene.objects.append(self)
         self._parent = None
         self.rect = Rect((position[0], position[1], size[0], size[1]))
+        self._bounds_rect = self.rect
+        self._bounds_color = (255, 0, 0)
         self.show_bounds = False
+
+    @property
+    def bounds_rect(self) -> pygame.Rect:
+        return self._bounds_rect
 
     @property
     def parent(self) -> "ARenderObject":
@@ -70,6 +76,9 @@ class ARenderObject(ABC):
     def handle_events(self, event: pygame.event.Event) -> None:
         pass
 
+    def draw_bounds(self, surface: pygame.Surface) -> None:
+        pygame.draw.rect(surface, self._bounds_color, self.bounds_rect, 2)
+
     def draw(self, surface: pygame.Surface) -> None:
         if self.show_bounds:
-            pygame.draw.rect(surface, (255, 0, 0), self.rect, 2)
+            self.draw_bounds(surface)
