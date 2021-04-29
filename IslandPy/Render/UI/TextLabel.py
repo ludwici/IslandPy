@@ -102,6 +102,7 @@ class TextLabel(ARenderObject):
     def font_size(self, value: int) -> None:
         self._font_size = value
         self._update_font()
+        self.text = self.text
 
     @property
     def text(self) -> str:
