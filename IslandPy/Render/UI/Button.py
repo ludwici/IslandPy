@@ -21,6 +21,15 @@ class ButtonState(Flags):
     SELECTED = 8
 
 
+class ButtonAction:
+    def __init__(self, handler=None) -> None:
+        self.handler = handler
+
+    def do(self) -> None:
+        if self.handler:
+            self.handler()
+
+
 class Button(ARenderObject):
     def __init__(self, scene: AScene, size: (int, int), default_image_path: str,
                  state: ButtonState = ButtonState.NORMAL, position: Tuple[int, int] = (0, 0)) -> None:
@@ -31,28 +40,13 @@ class Button(ARenderObject):
         self.set_image_by_state(state=ButtonState.NORMAL, path=default_image_path)
         self._current_image = self._images[self._state]
 
-        self.__action_list_lb = []
-        self.__action_list_rb = []
-        self.__on_hover_list_on = []
-        self.__on_hover_list_out = []
+        self.actions = {ButtonEventType.ON_CLICK_LB: ButtonAction(), ButtonEventType.ON_CLICK_RB: ButtonAction(),
+                        ButtonEventType.ON_HOVER_ON: ButtonAction(), ButtonEventType.ON_HOVER_OUT: ButtonAction()}
 
         self.__can_handle_event = True
         self.__can_call_out = False
 
         self.state = state
-
-    def add_action(self, item: dict, *args) -> None:
-        for k, v in item.items():
-            if k == ButtonEventType.ON_CLICK_LB:
-                self.__action_list_lb.append(v)
-            elif k == ButtonEventType.ON_CLICK_RB:
-                self.__action_list_rb.append(v)
-            elif k == ButtonEventType.ON_HOVER_ON:
-                self.__on_hover_list_on.append(v)
-            elif k == ButtonEventType.ON_HOVER_OUT:
-                self.__on_hover_list_out.append(v)
-            else:
-                raise KeyError(f"Invalid flag: {k}")
 
     def set_image_by_state(self, state, path: str) -> None:
         ext = os.path.splitext(path)[1]
@@ -93,6 +87,7 @@ class Button(ARenderObject):
         def process(handler):
             def wrapper(*args):
                 args[0].add_action({state: lambda: handler(*args)})
+                # args[0].actions[state] = lambda: handler(*args) <--- new system
             return wrapper
         return process
 
@@ -119,18 +114,18 @@ class Button(ARenderObject):
     def on_hover_on(self) -> None:
         self.state |= ButtonState.HOVERED
         self.__can_call_out = True
-        [a() for a in self.__on_hover_list_on]
+        self.actions[ButtonEventType.ON_HOVER_ON].do()
 
     def on_hover_out(self) -> None:
         self.state ^= ButtonState.HOVERED
-        [a() for a in self.__on_hover_list_out]
+        self.actions[ButtonEventType.ON_HOVER_OUT].do()
         self.__can_call_out = False
 
     def on_click_lb(self) -> None:
-        [a() for a in self.__action_list_lb]
+        self.actions[ButtonEventType.ON_CLICK_LB].do()
 
     def on_click_rb(self) -> None:
-        [a() for a in self.__action_list_rb]
+        self.actions[ButtonEventType.ON_CLICK_RB].do()
 
     def handle_events(self, event: pygame.event.Event) -> None:
         if self.is_locked or not self.__can_handle_event:
