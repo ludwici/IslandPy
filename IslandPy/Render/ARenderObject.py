@@ -61,6 +61,11 @@ class ARenderObject(ABC):
         self.rect.x = pos[0]
         self.rect.y = pos[1]
 
+    def set_position_by_center(self, pos: Tuple[int, int]) -> None:
+        new_pos_x = int(pos[0] / 2 - self.width)
+        new_pos_y = int(pos[1] / 2 - self.height)
+        self.set_position((new_pos_x, new_pos_y))
+
     def move(self, velocity: Tuple[int, int]) -> None:
         self.rect.move_ip(velocity[0], velocity[1])
 
