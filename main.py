@@ -18,6 +18,7 @@ class CustomScene(AScene):
         self.b.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show()})
         self.label2 = TextLabel(scene=self, text="Test", font_size=0, position=(0, 200))
         self.label2.copy_style_from(self.label)
+        self.label2.set_position_by_center(pygame.display.get_window_size())
         # self.t = TextLabel(scene=self, font_size=14, text="Test", padding=Indents(left=10))
         # self.t.set_position((self.label.rect.right, 0))
 
@@ -35,7 +36,8 @@ class CustomScene(AScene):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.count += 1
-                self.label2.padding = Indents(self.count, self.count, self.count, self.count)
+                # self.label2.padding = Indents(self.count, self.count, self.count, self.count)
+                self.label2.font_size += self.count
                 # self.change_scene("RectScene")
                 # self.label.font_size = self.count
                 # self.label.can_show_bg = not self.label.can_show_bg
