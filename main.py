@@ -1,6 +1,7 @@
 import pygame
 
 from IslandPy.Render.UI.Button import Button, ButtonState, ButtonEventType
+from IslandPy.Render.UI.FontStyle import FontStyle
 from IslandPy.Render.UI.Indents import Indents
 from IslandPy.Render.UI.TextLabel import TextLabel
 from IslandPy.RenderWindow import RenderWindow
@@ -11,16 +12,23 @@ class CustomScene(AScene):
     def __init__(self, name: str) -> None:
         super().__init__(name)
         self.count = 0
-        self.label = TextLabel(scene=self, font_size=14, text="Count: 0",
-                               padding=Indents(left=10, top=5, bottom=5, right=10), can_show_bg=True)
+        self.label = TextLabel(scene=self, font_style=FontStyle(font_size=14, is_show_bg=False, bg_color=pygame.Color(125, 125, 125),
+                                                                padding=Indents(left=10, top=5, bottom=5, right=10)),
+                               text="Count: 0")
         self.b = Button(scene=self, size=(50, 10), state=ButtonState.NORMAL, position=(0, self.label.rect.bottom),
                         default_image_path="res/btn.png")
-        self.b.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show()})
-        self.label2 = TextLabel(scene=self, text="Test", font_size=0, position=(0, 200))
+        self.b.actions[ButtonEventType.ON_HOVER_ON].handler = lambda: self.show()
+        self.b.actions[ButtonEventType.ON_HOVER_OUT].handler = lambda: self.hide()
+        self.label2 = TextLabel(scene=self, text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", position=(0, 200))
         self.label2.copy_style_from(self.label)
+        # self.label2.hide()
         self.label2.set_position_by_center(pygame.display.get_window_size())
         # self.t = TextLabel(scene=self, font_size=14, text="Test", padding=Indents(left=10))
         # self.t.set_position((self.label.rect.right, 0))
+
+    def hide(self) -> None:
+        for o in self.objects:
+            o.show_bounds = False
 
     def show(self) -> None:
         for o in self.objects:
@@ -40,7 +48,7 @@ class CustomScene(AScene):
                 self.label2.font_size += self.count
                 # self.change_scene("RectScene")
                 # self.label.font_size = self.count
-                # self.label.can_show_bg = not self.label.can_show_bg
+                self.label.is_show_bg = not self.label.is_show_bg
 
 
 def main() -> None:
