@@ -11,7 +11,7 @@ from IslandPy.Scenes.AScene import AScene
 
 
 class TextLabel(ARenderObject):
-    __slots__ = ("_text", "_image", "__surface", "_font_style")
+    __slots__ = ("_text", "_image", "_surface", "_font_style")
 
     def __init__(self, scene: AScene, text: str = "", position: Tuple[int, int] = (0, 0),
                  font_style: FontStyle = FontStyle()) -> None:
@@ -20,11 +20,11 @@ class TextLabel(ARenderObject):
         self.font_name = font_style.font_name
         self._text = text
         self._image = None
-        self.__surface = None
+        self._surface = None
         self.font_style.update_font()
         self.text = text
 
-    def copy_style_from(self, other: "TextLabel") -> None:
+    def copy_style_from(self, other) -> None:
         self.font_style = copy(other.font_style)
         self.font_style.update_font()
         self.text = self.text
@@ -126,21 +126,17 @@ class TextLabel(ARenderObject):
 
         self.rect.w = self._image.get_rect().w + self.padding.right + self.padding.left
         self.rect.h = self._image.get_rect().h + self.padding.bottom + self.padding.top
+        self._surface = pygame.Surface((self.rect.w, self.rect.h))  # lgtm [py/call/wrong-arguments]
+        self._surface.fill(color=self.bg_color)
         if self.is_show_bg:
-            self.__surface = pygame.Surface((self.rect.w, self.rect.h))  # lgtm [py/call/wrong-arguments]
-            self.__surface.fill(color=self.bg_color)
-            self.__surface.blit(self._image, (self.padding.left, self.padding.top))
-            self.__surface.set_alpha(self.alpha)
-        # else:
-        #     self.rect.w = self._image.get_rect().w + self.padding.right + self.padding.left
-        #     self.rect.h = self._image.get_rect().h + self.padding.bottom + self.padding.top
+            self._surface.set_colorkey(self.bg_color)
+        else:
+            self._surface.set_colorkey((0, 0, 0))
+        self._surface.blit(self._image, (self.padding.left, self.padding.top))
 
     def draw(self, surface: pygame.Surface) -> None:
         if not self._text or not self.is_draw:
             return
 
-        if self.is_show_bg:
-            surface.blit(self.__surface, self.rect)
-        else:
-            surface.blit(self._image, self.rect)
+        surface.blit(self._surface, self.rect)
         super(TextLabel, self).draw(surface)
