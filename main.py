@@ -3,6 +3,7 @@ import pygame
 from IslandPy.Render.UI.Button import Button, ButtonState, ButtonEventType
 from IslandPy.Render.UI.FontStyle import FontStyle
 from IslandPy.Render.UI.Indents import Indents
+from IslandPy.Render.UI.MultilineTextLabel import MultilineTextLabel
 from IslandPy.Render.UI.TextLabel import TextLabel
 from IslandPy.RenderWindow import RenderWindow
 from IslandPy.Scenes.AScene import AScene
@@ -19,10 +20,15 @@ class CustomScene(AScene):
                         default_image_path="res/btn.png")
         self.b.actions[ButtonEventType.ON_HOVER_ON].handler = lambda: self.show()
         self.b.actions[ButtonEventType.ON_HOVER_OUT].handler = lambda: self.hide()
-        self.label2 = TextLabel(scene=self, text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", position=(0, 200))
+        self.label2 = MultilineTextLabel(scene=self, line_length=150, line_spacing=2, text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", position=(0, 200))
         self.label2.copy_style_from(self.label)
+        self.label2.padding = Indents(10, 10, 10, 10)
         # self.label2.hide()
-        self.label2.set_position_by_center(pygame.display.get_window_size())
+        # self.label2.set_position_by_center(pygame.display.get_window_size())
+
+        # self.ml_text = MultilineTextLabel(scene=self, line_length=140, text=self.label2.text, position=(0, 200))
+        # self.ml_text.set_text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+
         # self.t = TextLabel(scene=self, font_size=14, text="Test", padding=Indents(left=10))
         # self.t.set_position((self.label.rect.right, 0))
 
@@ -45,10 +51,11 @@ class CustomScene(AScene):
             if event.key == pygame.K_SPACE:
                 self.count += 1
                 # self.label2.padding = Indents(self.count, self.count, self.count, self.count)
-                self.label2.font_size += self.count
+                # self.label2.font_size += self.count
                 # self.change_scene("RectScene")
                 # self.label.font_size = self.count
                 self.label.is_show_bg = not self.label.is_show_bg
+                self.label2.is_show_bg = not self.label2.is_show_bg
 
 
 def main() -> None:
